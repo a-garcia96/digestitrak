@@ -31,6 +31,10 @@ export default function Page() {
     <>
       <Head>
         <title>Login | Digestitrak | Gerd Symptom Tracker</title>
+        <meta
+          name="description"
+          content="Welcome to Digestitrak, your personalized tool for tracking meals and symptoms related to GERD. Log in now to start monitoring your dietary intake and symptoms, gaining valuable insights to optimize your gut health and manage your condition effectively."
+        />
       </Head>
       <main className="md:grid md:grid-cols-2">
         <section className="md:col-span-1 bg-white h-screen px-10 flex items-center justify-center">
@@ -79,7 +83,7 @@ export default function Page() {
               <p className="text-sm">
                 Don&apos;t have an account?{" "}
                 <Link
-                  href="/signup"
+                  href="/sign-up"
                   className="text-evening-sea-400 font-bold underline"
                 >
                   Sign Up
@@ -88,7 +92,7 @@ export default function Page() {
             </form>
           </div>
         </section>
-        <section className="col-span-1">
+        <section className="hidden md:block md:col-span-1">
           <Image
             src="https://images.pexels.com/photos/6740517/pexels-photo-6740517.jpeg?auto=compress&cs=tinysrgb&w=800"
             height={1080}
