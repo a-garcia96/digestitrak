@@ -2,10 +2,22 @@ import { useState } from "react";
 
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { createClient } from "@/utils/supabase/component";
 
 const Page = () => {
+  const router = useRouter();
+  const supabase = createClient();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  async function signUp() {
+    const { error } = await supabase.auth.signUp({ email, password });
+    if (error) {
+      console.error(error);
+    }
+    router.push("/");
+  }
 
   const handleChange = (e) => {
     const value = e.target.value;
