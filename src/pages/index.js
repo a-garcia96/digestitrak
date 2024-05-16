@@ -3,28 +3,32 @@ import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/router";
+
+import { createClient } from "@/utils/supabase/component";
 
 export default function Page() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleChange = (e) => {
-    const value = e.target.value;
+  const router = useRouter();
+  const supabase = createClient();
 
-    switch (e.target.type) {
-      case "email":
-        setEmail(value);
-        break;
-      case "password":
-        setPassword(value);
-        break;
+  async function logIn() {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) {
+      router.push("/error");
+    } else {
+      router.push("/dashboard");
     }
-  };
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    console.log(email, password);
+    logIn();
   };
 
   return (
@@ -56,7 +60,8 @@ export default function Page() {
                     name="email"
                     id="email"
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300  focus:ring-2 focus:ring-inset focus:ring-evening-sea-700 sm:text-sm sm:leading-6"
-                    onChange={handleChange}
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email}
                   />
                 </div>
               </div>
@@ -73,7 +78,8 @@ export default function Page() {
                     name="password"
                     id="password"
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300  focus:ring-2 focus:ring-inset focus:ring-evening-sea-700 sm:text-sm sm:leading-6"
-                    onChange={handleChange}
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
                   />
                 </div>
               </div>
