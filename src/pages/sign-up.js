@@ -14,28 +14,16 @@ const Page = () => {
   async function signUp() {
     const { error } = await supabase.auth.signUp({ email, password });
     if (error) {
-      console.error(error);
+      router.push("/error");
+    } else {
+      router.push("/dashboard");
     }
-    router.push("/");
   }
-
-  const handleChange = (e) => {
-    const value = e.target.value;
-
-    switch (e.target.type) {
-      case "email":
-        setEmail(value);
-        break;
-      case "password":
-        setPassword(value);
-        break;
-    }
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(email, password);
+    signUp();
   };
 
   return (
@@ -68,7 +56,7 @@ const Page = () => {
                     name="email"
                     id="email"
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300  focus:ring-2 focus:ring-inset focus:ring-evening-sea-700 sm:text-sm sm:leading-6"
-                    onChange={handleChange}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
               </div>
@@ -85,7 +73,7 @@ const Page = () => {
                     name="password"
                     id="password"
                     className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300  focus:ring-2 focus:ring-inset focus:ring-evening-sea-700 sm:text-sm sm:leading-6"
-                    onChange={handleChange}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
               </div>
