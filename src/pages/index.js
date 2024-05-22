@@ -81,6 +81,12 @@ export default function Page() {
                     onChange={(e) => setPassword(e.target.value)}
                     value={password}
                   />
+                  <Link
+                    href="/reset-password"
+                    className="text-xs mt-2 text-right text-evening-sea-500 italic hover:cursor-pointer"
+                  >
+                    Forgot your password?
+                  </Link>
                 </div>
               </div>
               <button className="text-base uppercase bg-evening-sea-500 text-evening-sea-50 font-bold w-full py-3 px-2 rounded hover:bg-evening-sea-400">
