@@ -12,11 +12,22 @@ const Page = () => {
   const [password, setPassword] = useState("");
 
   async function signUp() {
-    const { error } = await supabase.auth.signUp({ email, password });
+    const { error, data: userData } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
     if (error) {
       router.push("/error");
     } else {
-      router.push("/dashboard");
+      const { error } = await supabase.from("user_data").insert({
+        user_id: userData.user.id,
+        avatar:
+          "https://obvnehzbwtahxzwsutkx.supabase.co/storage/v1/object/public/avatars/default-user-avatar.png",
+      });
+      if (!error) {
+        router.push("/dashboard");
+      }
     }
   }
 
@@ -78,7 +89,7 @@ const Page = () => {
                 </div>
               </div>
               <button className="text-base uppercase bg-evening-sea-500 text-evening-sea-50 font-bold w-full py-3 px-2 rounded hover:bg-evening-sea-400">
-                login
+                create account
               </button>
               <p className="text-sm">
                 Already have an account?{" "}
