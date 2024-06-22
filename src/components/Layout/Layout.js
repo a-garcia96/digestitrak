@@ -11,10 +11,7 @@ const navigation = [
   { name: "Meals", href: "/meals", current: false },
   { name: "Symptoms", href: "/symptoms", current: false },
 ];
-const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-];
+const userNavigation = [{ name: "Account", href: "/account" }];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -205,7 +202,7 @@ export default function Layout({ children, pageTitle, user, userData }) {
 
         <main className="-mt-32">
           <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
-            <div className="rounded-lg bg-white px-5 py-6 shadow sm:px-6">
+            <div className="rounded-lg bg-white px-5 py-6 shadow sm:px-6 min-h-[80vh]">
               {children}
             </div>
           </div>
