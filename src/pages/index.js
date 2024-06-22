@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Head from "next/head";
 import Link from "next/link";
@@ -30,6 +30,18 @@ export default function Page() {
     e.preventDefault();
     logIn();
   };
+
+  useEffect(() => {
+    async function getSession() {
+      const { data, error } = await supabase.auth.getSession();
+
+      if (data) {
+        router.push("/dashboard");
+      }
+    }
+
+    getSession();
+  }, []);
 
   return (
     <>
@@ -82,7 +94,7 @@ export default function Page() {
                     value={password}
                   />
                   <Link
-                    href="/reset-password"
+                    href="/forgot-password"
                     className="text-xs mt-2 text-right text-evening-sea-500 italic hover:cursor-pointer"
                   >
                     Forgot your password?
