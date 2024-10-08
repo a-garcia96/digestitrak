@@ -95,6 +95,19 @@ const Layout = ({ children }) => {
     }
   };
 
+  function getFirstPathSegment(pathname) {
+    // Split the pathname into segments using the first slash as a delimiter
+    const segments = pathname.split("/");
+
+    // If there are more than two segments, return the first two segments joined by a slash
+    if (segments.length > 2) {
+      return segments.slice(0, 2).join("/");
+    }
+
+    // Otherwise, return the entire pathname
+    return pathname;
+  }
+
   return (
     <>
       {user && (
@@ -111,28 +124,32 @@ const Layout = ({ children }) => {
               <SidebarBody>
                 <SidebarSection>
                   <SidebarItem
-                    current={router.asPath == "/dashboard"}
+                    current={getFirstPathSegment(router.asPath) == "/dashboard"}
                     href="/dashboard"
                   >
                     <HomeIcon />
                     <SidebarLabel>Dashboard</SidebarLabel>
                   </SidebarItem>
                   <SidebarItem
-                    current={router.asPath == "/symptom-logs"}
+                    current={
+                      getFirstPathSegment(router.asPath) == "/symptom-logs"
+                    }
                     href="/symptom-logs"
                   >
                     <Square2StackIcon />
                     <SidebarLabel>Symptom Logs</SidebarLabel>
                   </SidebarItem>
                   <SidebarItem
-                    current={router.asPath == "/meal-logs"}
+                    current={getFirstPathSegment(router.asPath) == "/meal-logs"}
                     href="/meal-logs"
                   >
                     <TicketIcon />
                     <SidebarLabel>Meal Logs</SidebarLabel>
                   </SidebarItem>
                   <SidebarItem
-                    current={router.asPath == "/meal-plans"}
+                    current={
+                      getFirstPathSegment(router.asPath) == "/meal-plans"
+                    }
                     href="/meal-plans"
                   >
                     <TicketIcon />
