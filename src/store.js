@@ -1,9 +1,10 @@
 import { create } from "zustand";
 
-const useBearStore = create((set) => ({
-  bears: 0,
-  increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
-  removeAllBears: () => set({ bears: 0 }),
+const useStore = create((set) => ({
+  user: null,
+  userData: null,
+  updateUser: (user) => set(() => ({ user: user })),
+  updateUserData: (userData) => set(() => ({ userData: userData })),
 }));
 
-export { useBearStore };
+export { useStore };

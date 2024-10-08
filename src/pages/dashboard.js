@@ -1,44 +1,30 @@
 import Head from "next/head";
 
+import { createClient } from "@/utils/supabase/component";
+import SymptomOverview from "@/components/Dashboard/SymptomOverview/SymptomOverview";
+import SymptomOverviewEmptyState from "@/components/Dashboard/SymptomOverviewEmptyState/SymptomOverviewEmptyState";
+
 import Layout from "@/components/Layout/Layout";
-import { createClient } from "@/utils/supabase/server-props";
 
-export async function getServerSideProps(context) {
-  const supabase = createClient(context);
-
-  const { data, error } = await supabase.auth.getUser();
-
-  if (error || !data) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-
-  const { data: userData } = await supabase
-    .from("user_data")
-    .select()
-    .eq("user_id", data.user.id);
-
-  return {
-    props: {
-      user: data.user,
-      userData: userData,
-    },
-  };
+export default function Page() {
+  return (
+    <>
+      <div className="md:grid md:grid-cols-12 md:gap-5">
+        <section className="col-span-6">
+          <SymptomOverview />
+        </section>
+      </div>
+    </>
+  );
 }
 
-export default function Page({ user, userData }) {
+Page.getLayout = function getLayout(page) {
   return (
     <>
       <Head>
         <title>Dashboard | Digestitrak | GERD Symptom Tracker</title>
       </Head>
-      <Layout pageTitle={"Dashboard"} user={user} userData={userData}>
-        <h1>Dashboard</h1>
-      </Layout>
+      <Layout>{page}</Layout>
     </>
   );
-}
+};

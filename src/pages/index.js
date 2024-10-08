@@ -7,6 +7,8 @@ import { useRouter } from "next/router";
 
 import { createClient } from "@/utils/supabase/component";
 
+import { useStore } from "@/store";
+
 export default function Page() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,15 +16,28 @@ export default function Page() {
   const router = useRouter();
   const supabase = createClient();
 
+  const updateUser = useStore((state) => state.updateUser);
+  const updateUserData = useStore((state) => state.updateUserData);
+
   async function logIn() {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (error) {
-      router.push("/error");
-    } else {
-      router.push("/dashboard");
+    try {
+      const { error, data } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (data.user) {
+        updateUser(data.user);
+        let { data: user_data, error } = await supabase
+          .from("user_data")
+          .select()
+          .eq("user_id", data.user.id);
+
+        updateUserData(user_data[0]);
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -30,18 +45,6 @@ export default function Page() {
     e.preventDefault();
     logIn();
   };
-
-  useEffect(() => {
-    async function getSession() {
-      const { data, error } = await supabase.auth.getSession();
-
-      if (data) {
-        router.push("/dashboard");
-      }
-    }
-
-    getSession();
-  }, []);
 
   return (
     <>
@@ -128,3 +131,7 @@ export default function Page() {
     </>
   );
 }
+
+Page.getLayout = function getLayout(page) {
+  return <>{page}</>;
+};
