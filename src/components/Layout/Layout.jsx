@@ -59,6 +59,8 @@ import {
 import { useEffect } from "react";
 
 const Layout = ({ children }) => {
+  const [loading, setIsLoading] = useState(true);
+
   const router = useRouter();
 
   const user = useStore((state) => state.user);
