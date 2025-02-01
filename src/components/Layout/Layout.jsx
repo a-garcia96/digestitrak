@@ -168,7 +168,7 @@ const Layout = ({ children }) => {
                         alt=""
                       />
                       <span className="min-w-0">
-                        <span className="block truncate text-sm/5 font-medium text-evening-sea-100 dark:text-white">
+                        <span className="block truncate text-sm/5 font-medium text-evening-sea-900 dark:text-white">
                           {user.email}
                         </span>
                       </span>
@@ -179,11 +179,6 @@ const Layout = ({ children }) => {
                     <DropdownItem href="/my-profile">
                       <UserIcon />
                       <DropdownLabel>My profile</DropdownLabel>
-                    </DropdownItem>
-                    <DropdownDivider />
-                    <DropdownItem href="/share-feedback">
-                      <LightBulbIcon />
-                      <DropdownLabel>Share feedback</DropdownLabel>
                     </DropdownItem>
                     <DropdownDivider />
                     <DropdownItem onClick={() => signOutUser}>
