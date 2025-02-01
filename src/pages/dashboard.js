@@ -1,22 +1,20 @@
 import Head from "next/head";
-import { useEffect } from "react";
-import { useRouter } from "next/router";
 
-import { createClient } from "@/utils/supabase/component";
-
-import ActionBanner from "@/components/Dashboard/ActionBanner/ActionBanner";
-
-import SymptomOverview from "@/components/Dashboard/SymptomOverview/SymptomOverview";
-import SymptomOverviewEmptyState from "@/components/Dashboard/SymptomOverviewEmptyState/SymptomOverviewEmptyState";
+import { useStore } from "@/store";
 
 import Layout from "@/components/Layout/Layout";
+import ActionBanner from "@/components/Dashboard/ActionBanner/ActionBanner";
+import SymptomOverview from "@/components/Dashboard/SymptomOverview/SymptomOverview";
 
 export default function Page() {
+  const user = useStore((state) => state.user);
+  const userData = useStore((state) => state.userData);
+
   return (
     <>
       <div className="md:grid md:grid-cols-12 md:gap-5">
         {/* COMPONENTS MUST SPECIFIY HOW MANY COLUMNS TO USE */}
-        <ActionBanner />
+        <ActionBanner data={user} />
         <SymptomOverview />
       </div>
     </>
