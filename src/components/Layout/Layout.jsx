@@ -158,15 +158,6 @@ const Layout = ({ children }) => {
                     <TicketIcon />
                     <SidebarLabel>Meal Logs</SidebarLabel>
                   </SidebarItem>
-                  <SidebarItem
-                    current={
-                      getFirstPathSegment(router.asPath) == "/meal-plans"
-                    }
-                    href="/meal-plans"
-                  >
-                    <TicketIcon />
-                    <SidebarLabel>Meal Plans</SidebarLabel>
-                  </SidebarItem>
                 </SidebarSection>
                 <SidebarSpacer />
               </SidebarBody>
