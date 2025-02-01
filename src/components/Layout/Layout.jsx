@@ -57,9 +57,10 @@ import {
   TicketIcon,
 } from "@heroicons/react/20/solid";
 import { useEffect } from "react";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const Layout = ({ children }) => {
-  const [loading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
@@ -71,6 +72,8 @@ const Layout = ({ children }) => {
   const supabase = createClient();
 
   useEffect(() => {
+    setIsLoading(true);
+
     const getUserBySession = async () => {
       const {
         data: { user },
@@ -85,12 +88,11 @@ const Layout = ({ children }) => {
       updateUserData(user_data[0]);
     };
 
-    // if (!user) {
-    //   getUserBySession();
-    // }
     if (!user) {
       router.push("/");
     }
+
+    setIsLoading(false);
   }, [user]);
 
   const signOutUser = async () => {
@@ -240,7 +242,13 @@ const Layout = ({ children }) => {
             </Navbar>
           }
         >
-          {children}
+          {isLoading ? (
+            <div className="h-[calc(100vh-6rem)] flex items-center justify-center">
+              <LoadingSpinner />
+            </div>
+          ) : (
+            <>{children}</>
+          )}
         </SidebarLayout>
       )}
     </>
