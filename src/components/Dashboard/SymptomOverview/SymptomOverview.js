@@ -3,39 +3,32 @@ import { useState } from "react";
 
 const data = [
   {
-    date: "Jan 23",
-    "This Year": 68560,
-    "Last Year": 28560,
+    date: "Feb 1",
+    today: 2,
   },
   {
-    date: "Feb 23",
-    "This Year": 70320,
-    "Last Year": 30320,
+    date: "Feb 2",
+    today: 4,
   },
   {
-    date: "Mar 23",
-    "This Year": 80233,
-    "Last Year": 70233,
+    date: "Feb 3",
+    today: 1,
   },
   {
-    date: "Apr 23",
-    "This Year": 55123,
-    "Last Year": 45123,
+    date: "Feb 4",
+    today: 8,
   },
   {
-    date: "May 23",
-    "This Year": 56000,
-    "Last Year": 80600,
+    date: "Feb 5",
+    today: 10,
   },
   {
-    date: "Jun 23",
-    "This Year": 100000,
-    "Last Year": 85390,
+    date: "Feb 6",
+    today: 3,
   },
   {
-    date: "Jul 23",
-    "This Year": 85390,
-    "Last Year": 45340,
+    date: "Feb 7",
+    today: 0,
   },
 ];
 
@@ -52,8 +45,6 @@ function valueFormatter(number) {
 }
 
 export default function SymptomOverview() {
-  const [showComparison, setShowComparison] = useState(false);
-
   const customTooltip = (props) => {
     const { payload, active } = props;
     if (!active || !payload) return null;
@@ -65,7 +56,7 @@ export default function SymptomOverview() {
             <div className="space-y-1">
               <p className="text-tremor-content">{category.payload.date}</p>
               <p className="font-medium text-tremor-content-emphasis">
-                {category.value} bpm
+                {category.value} episodes
               </p>
             </div>
           </div>
@@ -73,6 +64,10 @@ export default function SymptomOverview() {
       </div>
     );
   };
+
+  const totalEpisodesForTheWeek = data.reduce((a, b) => {
+    return a + b.today;
+  }, 0);
 
   return (
     <section className="col-span-6 bg-white shadow-sm">
@@ -83,17 +78,17 @@ export default function SymptomOverview() {
           </h3>
           <div className="bg-gray-50 w-fit px-2 py-4 rounded-md">
             <p className="text-evening-sea-500">
-              <span className="mr-1 font-bold">{data.length}</span>
-              <span className="text-evening-sea-950">Symptoms This Week</span>
+              <span className="mr-1 font-bold">{totalEpisodesForTheWeek}</span>
+              <span className="text-evening-sea-950">episodes this week</span>
             </p>
           </div>
         </div>
         <BarChart
           data={data}
           index="date"
-          categories={["This Year"]}
+          categories={["today"]}
           colors={["evening-sea-500"]}
-          valueFormatter={valueFormatter}
+          allowDecimals={false}
           className="mt-6 hidden h-60 sm:block"
           showGridLines={false}
           showLegend={false}
