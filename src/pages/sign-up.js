@@ -4,14 +4,18 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { createClient } from "@/utils/supabase/component";
+import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
 
 const Page = () => {
   const router = useRouter();
   const supabase = createClient();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [creatingAccount, setIsCreatingAccount] = useState(false);
 
   async function signUp() {
+    setIsCreatingAccount(true);
+
     const { error, data: userData } = await supabase.auth.signUp({
       email,
       password,
@@ -27,14 +31,13 @@ const Page = () => {
           "https://nbnobnibyhrtkcphtbvc.supabase.co/storage/v1/object/public/avatars//default-user-avatar.png",
       });
       if (!error) {
-        router.push("/dashboard");
+        router.push("/verify-email");
       }
     }
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     signUp();
   };
 
@@ -90,7 +93,13 @@ const Page = () => {
                 </div>
               </div>
               <button className="text-base uppercase bg-evening-sea-500 text-evening-sea-50 font-bold w-full py-3 px-2 rounded hover:bg-evening-sea-400">
-                create account
+                {creatingAccount && (
+                  <div className="flex items-center justify-center gap-2">
+                    <LoadingSpinner />
+                    <span>Creating Account</span>
+                  </div>
+                )}
+                {!creatingAccount && <span>create account</span>}
               </button>
               <p className="text-sm">
                 Already have an account?{" "}

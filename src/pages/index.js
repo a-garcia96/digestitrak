@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
+
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
@@ -12,6 +14,8 @@ import { useStore } from "@/store";
 export default function Page() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [signInerror, setSignInerror] = useState(null);
+  const [isSigningIn, setIsSigningIn] = useState(false);
 
   const router = useRouter();
   const supabase = createClient();
@@ -27,10 +31,11 @@ export default function Page() {
       });
 
       if (error) {
-        console.log(error);
+        setSignInerror(error);
+        setIsSigningIn(false);
       }
 
-      if (data.user) {
+      if (data.user && !error) {
         updateUser(data.user);
         let { data: user_data, error } = await supabase
           .from("user_data")
@@ -38,17 +43,43 @@ export default function Page() {
           .eq("id", data.user.id);
 
         updateUserData(user_data[0]);
+        setIsSigningIn(false);
         router.push("/dashboard");
       }
     } catch (error) {
+      setSignInerror(error);
       console.log(error);
     }
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsSigningIn(true);
     logIn();
   };
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (session) {
+        setIsSigningIn(true);
+        updateUser(session.user);
+
+        let { data: user_data, error } = await supabase
+          .from("user_data")
+          .select()
+          .eq("id", session.user.id);
+
+        updateUserData(user_data[0]);
+        router.push("/dashboard"); // Redirect if session exists
+      }
+    };
+
+    checkSession();
+  }, []);
 
   return (
     <>
@@ -109,8 +140,19 @@ export default function Page() {
                 </div>
               </div>
               <button className="text-base uppercase bg-evening-sea-500 text-evening-sea-50 font-bold w-full py-3 px-2 rounded hover:bg-evening-sea-400">
-                login
+                {isSigningIn && (
+                  <div className="flex gap-2 items-center justify-center">
+                    <LoadingSpinner />
+                    <span className="inline-block">Logging in...</span>
+                  </div>
+                )}
+                {!isSigningIn && <span>login</span>}
               </button>
+              {signInerror && (
+                <p className="text-sm text-red-500 bg-red-100 px-1 py-2 rounded">
+                  {signInerror.code.replace(/_/g, " ")}
+                </p>
+              )}
               <p className="text-sm">
                 Don&apos;t have an account?{" "}
                 <Link

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useStore } from "@/store";
 import { createClient } from "@/utils/supabase/component";
 import { useRouter } from "next/router";
@@ -82,17 +83,24 @@ const Layout = ({ children }) => {
       updateUserData(user_data[0]);
     };
 
+    // if (!user) {
+    //   getUserBySession();
+    // }
     if (!user) {
-      getUserBySession();
+      router.push("/");
     }
   }, [user]);
 
   const signOutUser = async () => {
+    console.log("SIGNING OUT");
+
     const { error } = await supabase.auth.signOut();
 
     if (!error) {
       router.push("/");
     }
+
+    console.log(error);
   };
 
   function getFirstPathSegment(pathname) {
@@ -181,7 +189,7 @@ const Layout = ({ children }) => {
                       <DropdownLabel>My profile</DropdownLabel>
                     </DropdownItem>
                     <DropdownDivider />
-                    <DropdownItem onClick={() => signOutUser}>
+                    <DropdownItem onClick={signOutUser}>
                       <ArrowRightStartOnRectangleIcon />
                       <DropdownLabel>Sign out</DropdownLabel>
                     </DropdownItem>

@@ -1,6 +1,10 @@
 import Head from "next/head";
 
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+
 import { createClient } from "@/utils/supabase/component";
+
 import SymptomOverview from "@/components/Dashboard/SymptomOverview/SymptomOverview";
 import SymptomOverviewEmptyState from "@/components/Dashboard/SymptomOverviewEmptyState/SymptomOverviewEmptyState";
 
