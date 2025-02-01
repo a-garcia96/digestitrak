@@ -1,9 +1,10 @@
 import Head from "next/head";
-
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 
 import { createClient } from "@/utils/supabase/component";
+
+import ActionBanner from "@/components/Dashboard/ActionBanner/ActionBanner";
 
 import SymptomOverview from "@/components/Dashboard/SymptomOverview/SymptomOverview";
 import SymptomOverviewEmptyState from "@/components/Dashboard/SymptomOverviewEmptyState/SymptomOverviewEmptyState";
@@ -14,9 +15,9 @@ export default function Page() {
   return (
     <>
       <div className="md:grid md:grid-cols-12 md:gap-5">
-        <section className="col-span-6">
-          <SymptomOverview />
-        </section>
+        {/* COMPONENTS MUST SPECIFIY HOW MANY COLUMNS TO USE */}
+        <ActionBanner />
+        <SymptomOverview />
       </div>
     </>
   );
