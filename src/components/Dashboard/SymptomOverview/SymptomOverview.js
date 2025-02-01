@@ -75,16 +75,18 @@ export default function SymptomOverview() {
   };
 
   return (
-    <>
-      <Card className="ring-evening-sea-500 shadow-none">
-        <h3 className="font-bold text-evening-sea-500 text-lg">
-          Symptoms overview
-        </h3>
-        <div className="bg-gray-100 w-fit px-2 py-4 rounded-md">
-          <p className="text-evening-sea-950 font-semibold">
-            Symptoms This Week
-          </p>
-          <p className="font-bold text-evening-sea-500">{data.length}</p>
+    <section className="col-span-6 bg-white shadow-sm">
+      <Card className="p-3 ring-0 shadow-none">
+        <div className="flex justify-between items-center">
+          <h3 className="font-bold text-evening-sea-500 text-lg">
+            Symptoms overview
+          </h3>
+          <div className="bg-gray-50 w-fit px-2 py-4 rounded-md">
+            <p className="text-evening-sea-500">
+              <span className="mr-1 font-bold">{data.length}</span>
+              <span className="text-evening-sea-950">Symptoms This Week</span>
+            </p>
+          </div>
         </div>
         <BarChart
           data={data}
@@ -108,6 +110,6 @@ export default function SymptomOverview() {
           className="mt-4 h-56 sm:hidden"
         />
       </Card>
-    </>
+    </section>
   );
 }
