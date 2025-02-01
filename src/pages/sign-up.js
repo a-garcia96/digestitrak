@@ -18,12 +18,13 @@ const Page = () => {
     });
 
     if (error) {
+      console.log(error);
       router.push("/error");
     } else {
       const { error } = await supabase.from("user_data").insert({
-        user_id: userData.user.id,
+        id: userData.user.id,
         avatar:
-          "https://obvnehzbwtahxzwsutkx.supabase.co/storage/v1/object/public/avatars/default-user-avatar.png",
+          "https://nbnobnibyhrtkcphtbvc.supabase.co/storage/v1/object/public/avatars//default-user-avatar.png",
       });
       if (!error) {
         router.push("/dashboard");

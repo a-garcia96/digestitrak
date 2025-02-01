@@ -76,7 +76,7 @@ const Layout = ({ children }) => {
       let { data: user_data, error } = await supabase
         .from("user_data")
         .select()
-        .eq("user_id", user.id);
+        .eq("id", user.id);
 
       updateUser(user);
       updateUserData(user_data[0]);

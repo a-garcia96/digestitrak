@@ -11,13 +11,14 @@ import {
 } from "@/components/Catalyst/table";
 
 import SeverityPill from "../SeverityPill/SeverityPill";
+import Card from "../Card/Card";
 
 import { PlusCircleIcon } from "@heroicons/react/20/solid";
 
 const SymptomsTable = ({ symptomsData }) => {
   return (
     <>
-      <div className="shadow-md p-4 rounded bg-white space-y-2">
+      <Card>
         <div className="flex justify-between items-center">
           <h1 className="text-lg font-bold uppercase">All Symptom Logs</h1>
           <div>
@@ -73,7 +74,7 @@ const SymptomsTable = ({ symptomsData }) => {
             )}
           </TableBody>
         </Table>
-      </div>
+      </Card>
     </>
   );
 };

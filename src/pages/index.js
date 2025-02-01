@@ -26,12 +26,16 @@ export default function Page() {
         password,
       });
 
+      if (error) {
+        console.log(error);
+      }
+
       if (data.user) {
         updateUser(data.user);
         let { data: user_data, error } = await supabase
           .from("user_data")
           .select()
-          .eq("user_id", data.user.id);
+          .eq("id", data.user.id);
 
         updateUserData(user_data[0]);
         router.push("/dashboard");

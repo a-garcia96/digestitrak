@@ -12,7 +12,7 @@ export const Page = () => {
   const supabase = createClient();
 
   useEffect(() => {
-    const getSymptoms = async () => {
+    const getSymptomLogs = async () => {
       let { data: Symptoms, error } = await supabase
         .from("Symptom Logs")
         .select("*");
@@ -25,7 +25,7 @@ export const Page = () => {
       setData(Symptoms);
     };
 
-    getSymptoms();
+    getSymptomLogs();
   }, []);
 
   return (
