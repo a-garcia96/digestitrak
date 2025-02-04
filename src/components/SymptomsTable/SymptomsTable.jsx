@@ -82,8 +82,13 @@ const SymptomsTable = ({ symptomsData }) => {
                   </TableCell>
                   <TableCell>{log.comments}</TableCell>
                   <TableCell className="flex gap-2">
-                    <button className="bg-green-100 px-1 py-2 rounded shadow-sm text-green-500 font-medium">
-                      Edit
+                    <button>
+                      <Link
+                        href={`symptom-logs/edit?id=${log.id}`}
+                        className="bg-green-100 px-1 py-2 rounded shadow-sm text-green-500 font-medium"
+                      >
+                        Edit
+                      </Link>
                     </button>
                     <button
                       data-id={log.id}
