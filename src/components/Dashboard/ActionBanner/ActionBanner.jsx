@@ -14,7 +14,7 @@ const ActionBanner = ({ data }) => {
         <button>
           <Link
             className="block bg-evening-sea-500 text-evening-sea-50 font-semibold py-3 px-2 rounded shadow hover:shadow-md hover:-translate-y-0.5 transition-all"
-            href="/symptom-logs"
+            href="/symptom-logs/new"
           >
             New Symptom
           </Link>
@@ -22,7 +22,7 @@ const ActionBanner = ({ data }) => {
         <button>
           <Link
             className="block bg-evening-sea-500 text-evening-sea-50 font-semibold py-3 px-2 rounded shadow hover:shadow-md hover:-translate-y-0.5 transition-all"
-            href="/meal-logs"
+            href="/meal-logs/new"
           >
             New Meal
           </Link>

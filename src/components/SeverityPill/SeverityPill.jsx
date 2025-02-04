@@ -9,7 +9,7 @@ const SeverityPill = ({ severity, children }) => {
     );
   } else if (severity == "moderate") {
     return (
-      <div className="rounded-full w-fit bg-yellow-100 px-2 py-1 text-yellow-500 font-medium">
+      <div className="rounded-full w-fit bg-yellow-100 px-2 py-1 text-yellow-900 font-medium">
         {children}
       </div>
     );

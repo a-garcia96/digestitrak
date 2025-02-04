@@ -1,5 +1,8 @@
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
+
+import { createClient } from "@/utils/supabase/component";
 
 import {
   Table,
@@ -16,6 +19,21 @@ import Card from "../Card/Card";
 import { PlusCircleIcon } from "@heroicons/react/20/solid";
 
 const SymptomsTable = ({ symptomsData }) => {
+  const router = useRouter();
+  const supabase = createClient();
+
+  const handleDelete = async (e) => {
+    const id = e.target.dataset.id;
+
+    console.log(id);
+
+    const { error } = await supabase.from("Symptom Logs").delete().eq("id", id);
+
+    if (!error) {
+      router.reload();
+    }
+  };
+
   return (
     <>
       <Card>
@@ -44,21 +62,37 @@ const SymptomsTable = ({ symptomsData }) => {
               symptomsData.map((log) => (
                 <TableRow key={log.id}>
                   <TableCell className="font-medium">
-                    {new Date(log.created_at)
-                      .toLocaleString("en-US")
-                      .split(", ")
-                      .map((date) => (
-                        <p>{date}</p>
-                      ))}
+                    {new Date(log.date).toLocaleString("en-US", {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
                   </TableCell>
                   <TableCell>
-                    <div className="flex gap-x-5 gap-y-2">
+                    <div className="flex gap-x-5 gap-y-2 flex-wrap">
                       {log.symptoms.map((symptom) => (
-                        <SeverityPill severity={"high"}>{symptom}</SeverityPill>
+                        <SeverityPill severity={"moderate"}>
+                          {symptom}
+                        </SeverityPill>
                       ))}
                     </div>
                   </TableCell>
-                  <TableCell>{log.notes}</TableCell>
+                  <TableCell>{log.comments}</TableCell>
+                  <TableCell className="flex gap-2">
+                    <button className="bg-green-100 px-1 py-2 rounded shadow-sm text-green-500 font-medium">
+                      Edit
+                    </button>
+                    <button
+                      data-id={log.id}
+                      className="bg-red-100 px-1 py-2 rounded shadow-sm text-red-500 font-medium"
+                      onClick={handleDelete}
+                    >
+                      Delete
+                    </button>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (
