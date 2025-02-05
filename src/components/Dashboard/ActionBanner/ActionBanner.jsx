@@ -2,12 +2,12 @@ import React from "react";
 
 import Link from "next/link";
 
-const ActionBanner = ({ data }) => {
+const ActionBanner = ({ name }) => {
   return (
     <section className="col-span-full bg-white shadow-sm p-3 min-h-28 rounded xl:grid xl:grid-cols-12 xl:items-center">
       <div className="xl:col-span-9">
         <h1 className="text-3xl font-semibold text-evening-sea-500">
-          Hello, {data.email}
+          Hello, {name}!
         </h1>
       </div>
       <div className="xl:col-span-3 flex justify-end gap-2">
