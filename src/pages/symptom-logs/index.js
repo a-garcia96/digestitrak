@@ -15,7 +15,8 @@ export const Page = () => {
     const getSymptomLogs = async () => {
       let { data: Symptoms, error } = await supabase
         .from("Symptom Logs")
-        .select("*");
+        .select("*")
+        .order("date", { ascending: false });
 
       if (error) {
         setError(`ERROR: ${error}`);
