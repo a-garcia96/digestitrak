@@ -3,37 +3,6 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/component";
 import { useStore } from "@/store";
 
-const data = [
-  {
-    date: "Feb 1",
-    today: 2,
-  },
-  {
-    date: "Feb 2",
-    today: 4,
-  },
-  {
-    date: "Feb 3",
-    today: 1,
-  },
-  {
-    date: "Feb 4",
-    today: 8,
-  },
-  {
-    date: "Feb 5",
-    today: 10,
-  },
-  {
-    date: "Feb 6",
-    today: 3,
-  },
-  {
-    date: "Feb 7",
-    today: 0,
-  },
-];
-
 export default function SymptomOverview() {
   const supabase = createClient();
   const user = useStore((state) => state.user);
