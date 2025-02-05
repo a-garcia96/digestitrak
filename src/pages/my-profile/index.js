@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import Layout from "@/components/Layout/Layout";
 import AccountLayout from "@/components/AccountLayout/AccountLayout";
+import Card from "@/components/Card/Card";
 
 export default function Page() {
   return (
@@ -13,7 +14,9 @@ export default function Page() {
         <title>My Account</title>
       </Head>
       <Layout>
-        <AccountLayout />
+        <Card>
+          <AccountLayout />
+        </Card>
       </Layout>
     </>
   );
