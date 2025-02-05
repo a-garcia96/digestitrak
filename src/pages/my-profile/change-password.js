@@ -11,6 +11,7 @@ import { createClient } from "@/utils/supabase/server-props";
 import { createClient as createComponentClient } from "@/utils/supabase/component";
 
 import { useRouter } from "next/router";
+import Card from "@/components/Card/Card";
 
 export async function getServerSideProps(context) {
   const supabase = createClient(context);
@@ -99,7 +100,7 @@ export default function Page({ user, userData }) {
     });
 
     if (data) {
-      router.push("/");
+      router.push("/my-profile");
     } else {
       setErrorMessage(error);
       setShowError(true);
@@ -111,78 +112,87 @@ export default function Page({ user, userData }) {
       <Head>
         <title>Account Management | Password Change</title>
       </Head>
-      <Layout user={user} userData={userData}>
-        <section className="lg:grid lg:grid-cols-3 lg:gap-5">
-          <AccountLayout />
-          <aside className="col-span-2">
-            <h1 className="font-bold text-2xl text-evening-sea-500">
-              Update Your Password
-            </h1>
-            <form onSubmit={handleSubmit} className="space-y-6 mt-6">
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  New Password
-                </label>
-                <div className="mt-2">
-                  <input
-                    type={isTypeText ? "text" : "password"}
-                    name="password"
-                    id="password"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-evening-sea-600 sm:text-sm sm:leading-6"
-                    placeholder="you@example.com"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
+      <Layout>
+        <Card>
+          <section className="lg:grid lg:grid-cols-3 lg:gap-5">
+            <aside className="col-span-2">
+              <h1 className="font-bold text-2xl text-evening-sea-500">
+                Update Your Password
+              </h1>
+              <form onSubmit={handleSubmit} className="space-y-6 mt-6">
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    New Password
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      type={isTypeText ? "text" : "password"}
+                      name="password"
+                      id="password"
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-evening-sea-600 sm:text-sm sm:leading-6"
+                      placeholder="you@example.com"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Confirm New Password
-                </label>
-                <div className="mt-2">
-                  <input
-                    type={isTypeText ? "text" : "password"}
-                    name="password"
-                    id="password"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-evening-sea-600 sm:text-sm sm:leading-6"
-                    placeholder="you@example.com"
-                    value={confirmedPassword}
-                    onChange={(e) => setConfirmedPassword(e.target.value)}
-                  />
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Confirm New Password
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      type={isTypeText ? "text" : "password"}
+                      name="password"
+                      id="password"
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-evening-sea-600 sm:text-sm sm:leading-6"
+                      placeholder="you@example.com"
+                      value={confirmedPassword}
+                      onChange={(e) => setConfirmedPassword(e.target.value)}
+                    />
+                  </div>
+                  {showError && (
+                    <>
+                      <p className="text-xs text-red-500 bg-red-100 rounded mt-2 px-2 py-1">
+                        {errorMessage}
+                      </p>
+                      <div className="mt-2 flex justify-end">
+                        <input
+                          type="checkbox"
+                          onChange={(e) => setIsTypeText(e.target.checked)}
+                        />
+                        <label className="ml-2 text-xs italic">
+                          Show password
+                        </label>
+                      </div>
+                    </>
+                  )}
+                  <div className="flex gap-x-2 items-center mt-2">
+                    <Link
+                      href="/my-profile"
+                      className="bg-yellow-100 block w-fit p-2 rounded text-yellow-800 font-bold hover:bg-yellow-200"
+                    >
+                      Cancel
+                    </Link>
+                    <button
+                      disabled={buttonIsDisabled}
+                      className="bg-evening-sea-500 p-2 rounded font-bold text-evening-sea-50 disabled:bg-gray-400 disabled:text-gray-500 block"
+                      type="submit"
+                    >
+                      Submit
+                    </button>
+                  </div>
                 </div>
-                {showError && (
-                  <>
-                    <p className="text-xs text-red-500 bg-red-100 rounded mt-2 px-2 py-1">
-                      {errorMessage}
-                    </p>
-                    <div className="mt-2 flex justify-end">
-                      <input
-                        type="checkbox"
-                        onChange={(e) => setIsTypeText(e.target.checked)}
-                      />
-                      <label className="ml-2 text-xs italic">
-                        Show password
-                      </label>
-                    </div>
-                  </>
-                )}
-                <button
-                  disabled={buttonIsDisabled}
-                  className="bg-evening-sea-500 p-2 rounded font-bold text-evening-sea-50 mt-2 disabled:bg-gray-400 disabled:text-gray-500"
-                  type="submit"
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
-          </aside>
-        </section>
+              </form>
+            </aside>
+          </section>
+        </Card>
       </Layout>
     </>
   );
