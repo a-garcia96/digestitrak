@@ -163,7 +163,10 @@ const Layout = ({ children }) => {
               </SidebarBody>
               <SidebarFooter>
                 <Dropdown>
-                  <DropdownButton as={SidebarItem}>
+                  <DropdownButton
+                    as={SidebarItem}
+                    className="hover:cursor-pointer"
+                  >
                     <span className="flex min-w-0 items-center gap-3">
                       <Avatar
                         src={userData.avatar}
@@ -172,7 +175,7 @@ const Layout = ({ children }) => {
                       />
                       <span className="min-w-0">
                         <span className="block truncate text-sm/5 font-medium text-evening-sea-900 dark:text-white">
-                          {user.email}
+                          {userData.name ? userData.name : user.email}
                         </span>
                       </span>
                     </span>
