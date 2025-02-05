@@ -95,7 +95,7 @@ export default function SymptomOverview() {
             <div className="space-y-1">
               {/* <p className="text-tremor-content">{category.payload.date}</p> */}
               <p className="font-medium text-tremor-content-emphasis">
-                {category.value} episodes
+                {category.value} {category.value > 1 ? "episodes" : "episode"}
               </p>
             </div>
           </div>
