@@ -104,10 +104,6 @@ export default function SymptomOverview() {
     );
   };
 
-  const totalEpisodesForTheWeek = data.reduce((a, b) => {
-    return a + b.today;
-  }, 0);
-
   return (
     <section className="col-span-6 bg-white shadow-sm">
       <Card className="p-3 ring-0 shadow-none">
@@ -119,7 +115,7 @@ export default function SymptomOverview() {
             <p className="text-evening-sea-500">
               <span className="mr-1 font-bold">{episodeCount}</span>
               <span className="text-evening-sea-950">
-                episodes in the last 7 days
+                episodes within the last 7 days
               </span>
             </p>
           </div>
@@ -137,9 +133,9 @@ export default function SymptomOverview() {
         />
         {/* MOBILE DISPLAY BAR CHART */}
         <BarChart
-          data={data}
+          data={episodes}
           index="date"
-          categories={["This Year"]}
+          categories={["count"]}
           colors={["evening-sea-500"]}
           showYAxis={false}
           className="mt-4 h-56 sm:hidden"
