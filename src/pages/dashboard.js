@@ -14,7 +14,7 @@ export default function Page() {
     <>
       <div className="md:grid md:grid-cols-12 md:gap-5">
         {/* COMPONENTS MUST SPECIFIY HOW MANY COLUMNS TO USE */}
-        <ActionBanner data={user} />
+        <ActionBanner name={userData.name ? userData.name : user.email} />
         <SymptomOverview />
       </div>
     </>
