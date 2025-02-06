@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Link from "next/link";
 
+import { useStore } from "@/store";
+
 const ActionBanner = ({ name }) => {
+  const isLoading = useStore((state) => state.isLoading);
+  const setIsLoading = useStore((state) => state.setIsLoading);
+
   return (
     <section className="col-span-full bg-white shadow-sm p-3 min-h-28 rounded xl:grid xl:grid-cols-12 xl:items-center">
       <div className="xl:col-span-9">

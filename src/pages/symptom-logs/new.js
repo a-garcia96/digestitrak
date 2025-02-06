@@ -38,10 +38,38 @@ const steps = [
   },
 ];
 
-const NewSymptomEntryForm = () => {
+import { createClient as createServerClient } from "@/utils/supabase/server-props";
+
+export async function getServerSideProps(context) {
+  const supabase = createServerClient(context);
+
+  const { data, error } = await supabase.auth.getUser();
+
+  if (error || !data) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  let { data: user_data } = await supabase
+    .from("user_data")
+    .select()
+    .eq("id", data.user.id);
+
+  return {
+    props: {
+      user: data.user,
+      userData: user_data[0],
+    },
+  };
+}
+
+const NewSymptomEntryForm = ({ user }) => {
   const router = useRouter();
   const supabase = createClient();
-  const user = useStore((state) => state.user);
 
   const [submitError, setSubmitError] = useState({
     isError: false,
@@ -321,26 +349,28 @@ const NewSymptomEntryForm = () => {
   );
 };
 
-const Page = () => {
+const Page = ({ user, userData }) => {
   return (
     <Card>
       <h1 className="text-lg font-bold uppercase">
         Add a new symptom log entry
       </h1>
-      <NewSymptomEntryForm />
+      <NewSymptomEntryForm user={user} />
     </Card>
   );
 };
 
 export default Page;
 
-Page.getLayout = function getLayout(page) {
+Page.getLayout = function getLayout(page, { user, userData }) {
   return (
     <>
       <Head>
         <title>New Symptom Entry</title>
       </Head>
-      <Layout>{page}</Layout>
+      <Layout user={user} userData={userData}>
+        {page}
+      </Layout>
     </>
   );
 };

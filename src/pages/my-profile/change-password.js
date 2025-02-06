@@ -17,10 +17,12 @@ export async function getServerSideProps(context) {
   const supabase = createClient(context);
   const token = context.query.token;
   const email = context.query.email;
-  const tokenHash = context.query.tokenHash;
+
+  console.log(token, email);
 
   if (!token) {
     const { data, error } = await supabase.auth.getUser();
+
     if (error || !data) {
       return {
         redirect: {
@@ -30,31 +32,36 @@ export async function getServerSideProps(context) {
       };
     }
 
+    const { data: userData } = await supabase
+      .from("user_data")
+      .select("*")
+      .eq("id", data.user.id);
+
     return {
       props: {
         user: data.user,
+        userData: userData[0],
       },
     };
   }
 
-  const { data, error } = await supabase.auth.verifyOtp({
+  const { data: otpData } = await supabase.auth.verifyOtp({
     email: email,
     token: token,
     type: "recovery",
   });
 
+  console.log(otpData);
+
   const { data: userData } = await supabase
     .from("user_data")
-    .select()
-    .eq("user_id", data.user.id);
-
-  if (error) {
-  }
+    .select("*")
+    .eq("id", otpData.user.id);
 
   return {
     props: {
-      user: data.user,
-      userData: userData,
+      user: otpData.user,
+      userData: userData[0],
     },
   };
 }
@@ -108,7 +115,7 @@ export default function Page({ user, userData }) {
       <Head>
         <title>Account Management | Password Change</title>
       </Head>
-      <Layout>
+      <Layout user={user} userData={userData}>
         <Card>
           <section className="lg:grid lg:grid-cols-3 lg:gap-5">
             <aside className="col-span-2">
@@ -129,7 +136,6 @@ export default function Page({ user, userData }) {
                       name="password"
                       id="password"
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-evening-sea-600 sm:text-sm sm:leading-6"
-                      placeholder="you@example.com"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     />
@@ -148,7 +154,6 @@ export default function Page({ user, userData }) {
                       name="password"
                       id="password"
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-evening-sea-600 sm:text-sm sm:leading-6"
-                      placeholder="you@example.com"
                       value={confirmedPassword}
                       onChange={(e) => setConfirmedPassword(e.target.value)}
                     />

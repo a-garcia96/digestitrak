@@ -1,21 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
-
 import { useState } from "react";
-import { useStore } from "@/store";
 import { createClient } from "@/utils/supabase/component";
 
-export default function AccountLayout() {
+export default function AccountLayout({ user, userData }) {
   const supabase = createClient();
+  const router = useRouter();
 
   const [updatingName, setUpdatingName] = useState(false);
   const [updatingProfilePic, setUpdatingProfilePic] = useState(false);
   const [uploadingProfilePic, setUploadingProfilePic] = useState(false);
-
-  const user = useStore((state) => state.user);
-  const userData = useStore((state) => state.userData);
-  const updateUserData = useStore((state) => state.updateUserData);
 
   const [updatedName, setUpdatedName] = useState(userData.name);
   const [profileImage, setProfileImage] = useState(null);
@@ -31,8 +27,8 @@ export default function AccountLayout() {
       .select();
 
     if (!error) {
-      updateUserData(data[0]);
       setUpdatingName(false);
+      router.reload();
     }
   };
 
@@ -59,10 +55,8 @@ export default function AccountLayout() {
           .select();
 
         if (!error) {
-          updateUserData({ ...userData, avatar: urlResponseData.publicUrl });
-
           setUploadingProfilePic(false);
-          setUpdatingProfilePic(false);
+          router.reload();
         } else {
           console.log(error);
         }

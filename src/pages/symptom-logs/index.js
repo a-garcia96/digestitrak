@@ -6,7 +6,36 @@ import { useEffect, useState } from "react";
 
 import SymptomsTable from "@/components/SymptomsTable/SymptomsTable";
 
-export const Page = () => {
+import { createClient as createServerClient } from "@/utils/supabase/server-props";
+
+export async function getServerSideProps(context) {
+  const supabase = createServerClient(context);
+
+  const { data, error } = await supabase.auth.getUser();
+
+  if (error || !data) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  let { data: user_data } = await supabase
+    .from("user_data")
+    .select()
+    .eq("id", data.user.id);
+
+  return {
+    props: {
+      user: data.user,
+      userData: user_data[0],
+    },
+  };
+}
+
+export const Page = (user, userData) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const supabase = createClient();
@@ -45,13 +74,15 @@ export const Page = () => {
 
 export default Page;
 
-Page.getLayout = function getLayout(page) {
+Page.getLayout = function getLayout(page, { user, userData }) {
   return (
     <>
       <Head>
         <title>Symptoms | DigestiTrak</title>
       </Head>
-      <Layout>{page}</Layout>
+      <Layout user={user} userData={userData}>
+        {page}
+      </Layout>
     </>
   );
 };

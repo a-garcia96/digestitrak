@@ -20,6 +20,8 @@ export default function Page() {
   const router = useRouter();
   const supabase = createClient();
 
+  const user = useStore((state) => state.user);
+
   const updateUser = useStore((state) => state.updateUser);
   const updateUserData = useStore((state) => state.updateUserData);
 
@@ -60,19 +62,19 @@ export default function Page() {
 
   useEffect(() => {
     const checkSession = async () => {
+      console.log("checking session on login page");
       const {
         data: { session },
       } = await supabase.auth.getSession();
 
       if (session) {
         setIsSigningIn(true);
-        updateUser(session.user);
-
         let { data: user_data, error } = await supabase
           .from("user_data")
           .select()
           .eq("id", session.user.id);
 
+        updateUser(session.user);
         updateUserData(user_data[0]);
         router.push("/dashboard"); // Redirect if session exists
       }
