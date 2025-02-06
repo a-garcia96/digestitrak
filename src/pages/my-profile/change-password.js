@@ -20,7 +20,6 @@ export async function getServerSideProps(context) {
   const tokenHash = context.query.tokenHash;
 
   if (!token) {
-    console.log("no token found");
     const { data, error } = await supabase.auth.getUser();
     if (error || !data) {
       return {
@@ -50,7 +49,6 @@ export async function getServerSideProps(context) {
     .eq("user_id", data.user.id);
 
   if (error) {
-    console.log(`ERROR: ${error}`);
   }
 
   return {
@@ -75,11 +73,9 @@ export default function Page({ user, userData }) {
   useEffect(() => {
     if (confirmedPassword.length >= 6 && password.length >= 6) {
       if (password == confirmedPassword) {
-        console.log("passwords match!");
         setButtonIsDisabled(false);
         setShowError(false);
       } else {
-        console.log("passwords do not match");
         setButtonIsDisabled(true);
         setErrorMessage(
           "Passwords do not match. Please verify that they are the same."

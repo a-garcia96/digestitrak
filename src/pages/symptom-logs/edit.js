@@ -69,8 +69,6 @@ const NewSymptomEntryForm = () => {
         .eq("id", query);
 
       if (!error) {
-        console.log(data);
-
         setFormData((prevState) => ({
           ...prevState,
           dateAndTime: new Date(data[0].date),
@@ -141,7 +139,6 @@ const NewSymptomEntryForm = () => {
   };
 
   const handleDateChange = (date) => {
-    console.log(date);
     const supaDate = new Date(date);
     const formattedSupaDate = supaDate.toISOString();
 
@@ -337,7 +334,6 @@ const NewSymptomEntryForm = () => {
               className="bg-evening-sea-500 rounded font-semibold disabled:bg-gray-500 p-2 text-white"
               onClick={(e) => {
                 e.preventDefault();
-                console.log(formData);
                 setPage((prevState) => prevState + 1);
               }}
             >
