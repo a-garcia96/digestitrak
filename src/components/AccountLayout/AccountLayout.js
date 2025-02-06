@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 import { useState } from "react";
 import { useStore } from "@/store";
@@ -9,12 +10,16 @@ export default function AccountLayout() {
   const supabase = createClient();
 
   const [updatingName, setUpdatingName] = useState(false);
+  const [updatingProfilePic, setUpdatingProfilePic] = useState(false);
+  const [uploadingProfilePic, setUploadingProfilePic] = useState(false);
 
   const user = useStore((state) => state.user);
   const userData = useStore((state) => state.userData);
   const updateUserData = useStore((state) => state.updateUserData);
 
   const [updatedName, setUpdatedName] = useState(userData.name);
+  const [profileImage, setProfileImage] = useState(null);
+  const [imageIsTooLarge, setImageIsTooLarge] = useState(false);
 
   const handleNameUpdate = async (e) => {
     e.preventDefault();
@@ -28,6 +33,44 @@ export default function AccountLayout() {
     if (!error) {
       updateUserData(data[0]);
       setUpdatingName(false);
+    }
+  };
+
+  const handlePhotoUpload = async (e) => {
+    e.preventDefault();
+    const maxSize = 2 * 1024 * 1024; // 2MB limit
+    if (profileImage.size <= maxSize) {
+      setImageIsTooLarge(false);
+      setUploadingProfilePic(true);
+
+      const { data: uploadResponse, error } = await supabase.storage
+        .from("avatars")
+        .upload(`${profileImage.name}`, profileImage);
+
+      if (!error) {
+        const { data: urlResponseData } = await supabase.storage
+          .from("avatars")
+          .getPublicUrl(uploadResponse.path);
+
+        const { data, error } = await supabase
+          .from("user_data")
+          .update({ avatar: urlResponseData.publicUrl })
+          .eq("id", user.id)
+          .select();
+
+        if (!error) {
+          updateUserData({ ...userData, avatar: urlResponseData.publicUrl });
+
+          setUploadingProfilePic(false);
+          setUpdatingProfilePic(false);
+        } else {
+          console.log(error);
+        }
+      } else {
+        console.log(error);
+      }
+    } else {
+      setImageIsTooLarge(true);
     }
   };
 
@@ -47,15 +90,53 @@ export default function AccountLayout() {
             </dt>
             <dd className="mt-1 flex text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0">
               <span className="grow">
-                <Image src={userData.avatar} width={48} height={48} />
+                {updatingProfilePic ? (
+                  <form onSubmit={handlePhotoUpload}>
+                    <input
+                      type="file"
+                      accept="image/png, image/jpeg"
+                      onChange={(e) => setProfileImage(e.target.files[0])}
+                    />
+                    {uploadingProfilePic ? (
+                      <div className="inline-block">
+                        <LoadingSpinner />
+                      </div>
+                    ) : (
+                      <button className="font-medium text-evening-sea-950 hover:text-green-500">
+                        Submit
+                      </button>
+                    )}
+                    <p className="bg-blue-50 text-blue-600 font-medium mt-3 rounded px-1">
+                      Please upload a file in jpeg or png format no larger than
+                      2MB.
+                    </p>
+                    {imageIsTooLarge && (
+                      <p className="bg-red-50 text-red-600 font-medium mt-3 rounded px-1">
+                        Image is over 2MB. Please choose another image.
+                      </p>
+                    )}
+                  </form>
+                ) : (
+                  <Image src={userData.avatar} width={48} height={48} />
+                )}
               </span>
               <span className="ml-4 shrink-0">
-                <button
-                  type="button"
-                  className="rounded-md bg-white font-medium text-evening-sea-900 hover:text-evening-sea-500"
-                >
-                  Update
-                </button>
+                {updatingProfilePic ? (
+                  <button
+                    onClick={() => setUpdatingProfilePic(false)}
+                    className="rounded-md bg-white font-medium text-evening-sea-900 hover:text-evening-sea-500"
+                  >
+                    Cancel
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="rounded-md bg-white font-medium text-evening-sea-900 hover:text-evening-sea-500"
+                    onClick={() => setUpdatingProfilePic(true)}
+                  >
+                    Update
+                  </button>
+                )}
               </span>
             </dd>
           </div>

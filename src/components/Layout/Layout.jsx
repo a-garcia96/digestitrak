@@ -96,8 +96,6 @@ const Layout = ({ children }) => {
   }, [user]);
 
   const signOutUser = async () => {
-    console.log("SIGNING OUT");
-
     const { error } = await supabase.auth.signOut();
 
     if (!error) {

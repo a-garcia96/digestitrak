@@ -75,8 +75,6 @@ export default function SymptomOverview() {
         }
       }
 
-      console.log(groupedData);
-
       setEpisodes([...groupedData]);
     };
 

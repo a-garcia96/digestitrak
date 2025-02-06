@@ -25,8 +25,6 @@ const SymptomsTable = ({ symptomsData }) => {
   const handleDelete = async (e) => {
     const id = e.target.dataset.id;
 
-    console.log(id);
-
     const { error } = await supabase.from("Symptom Logs").delete().eq("id", id);
 
     if (!error) {
