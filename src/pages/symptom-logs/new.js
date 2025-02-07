@@ -18,7 +18,7 @@ import {
   Fieldset,
   Label,
   Legend,
-} from "@/components/catalyst/fieldset";
+} from "../../components/Catalyst/fieldset";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
