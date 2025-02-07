@@ -5,6 +5,7 @@ import { useStore } from "@/store";
 import Layout from "@/components/Layout/Layout";
 import ActionBanner from "@/components/Dashboard/ActionBanner/ActionBanner";
 import SymptomOverview from "@/components/Dashboard/SymptomOverview/SymptomOverview";
+import LatestSymptomsTable from "@/components/Dashboard/LatestSymptomsTable/LatestSymptomsTable";
 
 import { createClient } from "@/utils/supabase/server-props";
 
@@ -38,10 +39,11 @@ export async function getServerSideProps(context) {
 export default function Page({ user, userData }) {
   return (
     <>
-      <div className="md:grid md:grid-cols-12 md:gap-5">
+      <div className="md:grid md:grid-cols-12 md:gap-5 md:items-start">
         {/* COMPONENTS MUST SPECIFIY HOW MANY COLUMNS TO USE */}
         <ActionBanner name={userData.name || user.email} />
         <SymptomOverview user={user} />
+        <LatestSymptomsTable userId={user.id} />
       </div>
     </>
   );

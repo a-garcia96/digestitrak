@@ -1,9 +1,15 @@
 import "@/styles/globals.css";
 
-import { SidebarLayout } from "@/components/Catalyst/sidebar-layout";
+import NextNProgress from "nextjs-progressbar";
 
 export default function App({ Component, pageProps }) {
   const getLayout = Component.getLayout ?? ((page) => page);
 
-  return getLayout(<Component {...pageProps} />, pageProps);
+  return getLayout(
+    <>
+      <NextNProgress color="#10BAA9" />
+      <Component {...pageProps} />
+    </>,
+    pageProps
+  );
 }
