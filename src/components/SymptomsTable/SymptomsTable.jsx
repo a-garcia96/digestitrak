@@ -71,8 +71,8 @@ const SymptomsTable = ({ symptomsData }) => {
                   </TableCell>
                   <TableCell>
                     <div className="flex gap-x-5 gap-y-2 flex-wrap">
-                      {log.symptoms.map((symptom) => (
-                        <SeverityPill severity={"moderate"}>
+                      {log.symptoms.map((symptom, i) => (
+                        <SeverityPill key={i} severity={"moderate"}>
                           {symptom}
                         </SeverityPill>
                       ))}

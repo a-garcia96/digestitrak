@@ -346,7 +346,39 @@ const NewSymptomEntryForm = () => {
   );
 };
 
-const Page = () => {
+import { createClient as createServerClient } from "@/utils/supabase/server-props";
+
+export async function getServerSideProps(context) {
+  const supabase = createServerClient(context);
+
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  if (error || !user) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  let { data: user_data } = await supabase
+    .from("user_data")
+    .select()
+    .eq("id", user.id);
+
+  return {
+    props: {
+      user: user,
+      userData: user_data[0],
+    },
+  };
+}
+
+const Page = ({ user, userData }) => {
   return (
     <Card>
       <h1 className="text-lg font-bold uppercase">
@@ -359,13 +391,15 @@ const Page = () => {
 
 export default Page;
 
-Page.getLayout = function getLayout(page) {
+Page.getLayout = function getLayout(page, { user, userData }) {
   return (
     <>
       <Head>
         <title>New Symptom Entry</title>
       </Head>
-      <Layout>{page}</Layout>
+      <Layout user={user} userData={userData}>
+        {page}
+      </Layout>
     </>
   );
 };
