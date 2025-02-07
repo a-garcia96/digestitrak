@@ -37,12 +37,6 @@ export default function Layout({ user, userData, children }) {
       icon: FolderIcon,
       current: false,
     },
-    {
-      name: "Meal Logs",
-      href: "/meal-logs",
-      icon: FolderIcon,
-      current: false,
-    },
   ]);
 
   function getFirstPathSegment(pathname) {

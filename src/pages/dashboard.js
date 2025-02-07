@@ -27,8 +27,6 @@ export async function getServerSideProps(context) {
     .select()
     .eq("id", data.user.id);
 
-  console.log(user_data);
-
   return {
     props: {
       user: data.user,
@@ -43,7 +41,7 @@ export default function Page({ user, userData }) {
       <div className="md:grid md:grid-cols-12 md:gap-5">
         {/* COMPONENTS MUST SPECIFIY HOW MANY COLUMNS TO USE */}
         <ActionBanner name={userData.name || user.email} />
-        <SymptomOverview />
+        <SymptomOverview user={user} />
       </div>
     </>
   );

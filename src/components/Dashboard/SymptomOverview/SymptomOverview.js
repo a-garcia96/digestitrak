@@ -3,9 +3,8 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/component";
 import { useStore } from "@/store";
 
-export default function SymptomOverview() {
+export default function SymptomOverview({ user }) {
   const supabase = createClient();
-  const user = useStore((state) => state.user);
 
   const [episodeCount, setEpisodeCount] = useState(0);
   const [episodes, setEpisodes] = useState([]);

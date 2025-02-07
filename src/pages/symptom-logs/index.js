@@ -11,9 +11,12 @@ import { createClient as createServerClient } from "@/utils/supabase/server-prop
 export async function getServerSideProps(context) {
   const supabase = createServerClient(context);
 
-  const { data, error } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
 
-  if (error || !data) {
+  if (error || !user) {
     return {
       redirect: {
         destination: "/",
@@ -25,11 +28,11 @@ export async function getServerSideProps(context) {
   let { data: user_data } = await supabase
     .from("user_data")
     .select()
-    .eq("id", data.user.id);
+    .eq("id", user.id);
 
   return {
     props: {
-      user: data.user,
+      user: user,
       userData: user_data[0],
     },
   };
@@ -45,10 +48,11 @@ export const Page = (user, userData) => {
       let { data: Symptoms, error } = await supabase
         .from("Symptom Logs")
         .select("*")
+        .eq("user_id", user.user.id)
         .order("date", { ascending: false });
 
       if (error) {
-        setError(`ERROR: ${error}`);
+        setError(`ERROR: ${JSON.stringify(error)} ${JSON.stringify(user)}`);
         return error;
       }
 

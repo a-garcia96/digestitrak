@@ -24,14 +24,14 @@ const ActionBanner = ({ name }) => {
             New Symptom
           </Link>
         </button>
-        <button>
+        {/* <button>
           <Link
             className="block bg-evening-sea-500 text-evening-sea-50 font-semibold py-3 px-2 rounded shadow hover:shadow-md hover:-translate-y-0.5 transition-all"
             href="/meal-logs/new"
           >
             New Meal
           </Link>
-        </button>
+        </button> */}
       </div>
     </section>
   );
